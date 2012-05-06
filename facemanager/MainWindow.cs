@@ -1,5 +1,6 @@
 using System;
 using Gtk;
+using Gdk;
 using FaceCon.CommandService;
 
 namespace FaceCon.FaceManager
@@ -68,6 +69,19 @@ namespace FaceCon.FaceManager
 			}
 		}
 		
+		private void RenderUserList()
+		{
+			foreach(var user in userInfoManager.ListUsers())
+			{
+				(usersView.Model as ListStore).AppendValues(
+					user.Id, user.Uid, user.Name);
+			}
+		}
+		
+		private void RenderPhotoList(User user)
+		{
+		}
+		
 		private void BuildInterface ()
 		{
 			VBox usersPane = new VBox();
@@ -89,6 +103,17 @@ namespace FaceCon.FaceManager
 			
 			usersView = new TreeView();
 			usersView.SetSizeRequest(320, 240);
+			TreeViewColumn userIdColumn = new TreeViewColumn();
+			TreeViewColumn userUidColumn = new TreeViewColumn();
+			TreeViewColumn userNameColumn = new TreeViewColumn();
+			userIdColumn.Title = "ID";
+			userUidColumn.Title = "UID";
+			userNameColumn.Title = "Name";
+			usersView.AppendColumn(userIdColumn);
+			usersView.AppendColumn(userUidColumn);
+			usersView.AppendColumn(userNameColumn);
+			ListStore usersStore = new ListStore(typeof(int), typeof(int), typeof(string));
+			usersView.Model = usersStore;
 			
 			usersPane.PackStart(usersLabel, false, false, 8);
 			usersPane.PackStart(usersView);
@@ -106,6 +131,14 @@ namespace FaceCon.FaceManager
 			
 			photosView = new TreeView();
 			photosView.SetSizeRequest(320, 240);
+			TreeViewColumn photoIdColumn = new TreeViewColumn();
+			TreeViewColumn photoImageColumn = 
+				new TreeViewColumn("Image", new CellRendererPixbuf(),0);
+			photoIdColumn.Title = "ID";
+			photosView.AppendColumn(photoIdColumn);
+			photosView.AppendColumn(photoImageColumn);
+			ListStore photosStore = new ListStore(typeof(int), typeof(Pixbuf));
+			photosView.Model = photosStore;
 			
 			photosPane.PackStart(photosLabel, false, false, 8);
 			photosPane.PackStart(photosView);
@@ -132,7 +165,7 @@ namespace FaceCon.FaceManager
 			this.DeleteEvent += new DeleteEventHandler(OnDelete);
 		}
 		
-		void OnDelete(object sender, DeleteEventArgs args)
+		private void OnDelete(object sender, DeleteEventArgs args)
 		{
 			Application.Quit();
 		}

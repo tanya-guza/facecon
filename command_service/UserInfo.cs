@@ -39,6 +39,21 @@ namespace FaceCon.CommandService
 		[Indexed("IX_UserId")]
 		public int UserId {get; set; }
 		public string ImageData {get; set;}
+		
+		private Image<Gray, byte> image;
+		[IgnoreAttribute]
+		public Image<Gray, byte> Image
+		{
+			get
+			{
+				if (image == null)
+				{
+					image = UserInfoManager.DeserializeImage(ImageData);
+				}
+				
+				return image;
+			}
+		}
 	}
 	
 	/// <summary>
@@ -125,7 +140,7 @@ namespace FaceCon.CommandService
 		/// <param name='user'>
 		/// User data
 		/// </param>
-		void SaveUser(User user)
+		public void SaveUser(User user)
 		{
 			if (user.Id == 0)
 			{
@@ -142,7 +157,7 @@ namespace FaceCon.CommandService
 		/// <param name='Name'>
 		/// Name
 		/// </param>
-		User FindUser(string Name)
+		public User FindUser(string Name)
 		{
 			return session.ExecuteScalar<User>(
 				"SELECT FROM User WHERE Name == ?", Name);
@@ -154,35 +169,16 @@ namespace FaceCon.CommandService
 		/// <param name='user'>
 		/// User
 		/// </param>
-		void DeleteUser(User user)
+		public void DeleteUser(User user)
 		{
 			session.Delete<User>(user);
 		}
 		
-		/// <summary>
-		/// Lists the user photo images.
-		/// </summary>
-		/// <returns>
-		/// The user photos.
-		/// </returns>
-		/// <param name='user'>
-		/// User.
-		/// </param>
-		List<Image<Gray, byte>> ListUserPhotos(User user)
+		public List<User> ListUsers()
 		{
-			List<Image<Gray, byte>> photos = new List<Image<Gray, byte>>();
-			IEnumerable<Photo> photoData = session.Query<Photo>(
-				"SELECT * FROM Photo WHERE UserId = ?", user.Id);
-			
-			foreach(var photo in photoData)
-			{
-				photos.Add(DeserializeImage(photo.ImageData));
-			}
-			
-			return photos;
+			return new List<User>(session.Query<User>("SELECT * FROM User"));
 		}
-		
-				/// <summary>
+		/// <summary>
 		/// Lists the user photo records.
 		/// </summary>
 		/// <returns>
@@ -191,7 +187,7 @@ namespace FaceCon.CommandService
 		/// <param name='user'>
 		/// User.
 		/// </param>
-		List<Photo> ListUserPhotoData(User user)
+		public List<Photo> ListUserPhotoData(User user)
 		{
 			
 			IEnumerable<Photo> photoData = session.Query<Photo>(
@@ -208,7 +204,7 @@ namespace FaceCon.CommandService
 		/// <param name='photo'>
 		/// User data
 		/// </param>
-		void SavePhoto(Photo photo)
+		public void SavePhoto(Photo photo)
 		{
 			if (photo.Id == 0)
 			{
@@ -225,7 +221,7 @@ namespace FaceCon.CommandService
 		/// <param name='Name'>
 		/// Name
 		/// </param>
-		Photo FindPhoto(int Id)
+		public Photo FindPhoto(int Id)
 		{
 			return session.ExecuteScalar<Photo>(
 				"SELECT FROM User WHERE Id == ?", Id);
@@ -237,7 +233,7 @@ namespace FaceCon.CommandService
 		/// <param name='photo'>
 		/// Photo
 		/// </param>
-		void DeleteUser(Photo photo)
+		public void DeleteUser(Photo photo)
 		{
 			session.Delete<Photo>(photo);
 		}

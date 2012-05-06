@@ -157,7 +157,7 @@ namespace FaceCon.CommandService
 		}
 		
 		/// <summary>
-		/// Lists the user photos.
+		/// Lists the user photo images.
 		/// </summary>
 		/// <returns>
 		/// The user photos.
@@ -178,9 +178,66 @@ namespace FaceCon.CommandService
 			
 			return photos;
 		}
+		
+				/// <summary>
+		/// Lists the user photo records.
+		/// </summary>
+		/// <returns>
+		/// The user photos.
+		/// </returns>
+		/// <param name='user'>
+		/// User.
+		/// </param>
+		List<Photo> ListUserPhotoData(User user)
+		{
+			
+			IEnumerable<Photo> photoData = session.Query<Photo>(
+				"SELECT * FROM Photo WHERE UserId = ?", user.Id);
+	
+			return new List<Photo>(photoData);
+		}
 		#endregion
 		
 		#region Photo methods
+		/// <summary>
+		/// Creates new record in photo table or updates existing one
+		/// </summary>
+		/// <param name='photo'>
+		/// User data
+		/// </param>
+		void SavePhoto(Photo photo)
+		{
+			if (photo.Id == 0)
+			{
+				session.Insert<Photo>(photo);
+			} else
+			{
+				session.Update<Photo>(photo);
+			}
+		}
+		
+		/// <summary>
+		/// Finds the user by name
+		/// </summary>
+		/// <param name='Name'>
+		/// Name
+		/// </param>
+		Photo FindPhoto(int Id)
+		{
+			return session.ExecuteScalar<Photo>(
+				"SELECT FROM User WHERE Id == ?", Id);
+		}
+		
+		/// <summary>
+		/// Deletes the photo
+		/// </summary>
+		/// <param name='photo'>
+		/// Photo
+		/// </param>
+		void DeleteUser(Photo photo)
+		{
+			session.Delete<Photo>(photo);
+		}
 		#endregion
 		
 		

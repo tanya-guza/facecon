@@ -69,7 +69,78 @@ namespace FaceCon.FaceManager
 			}
 		}
 		
-		private void RenderUserList ()
+		
+		#region Event Handlers
+		private void AddPhotoButtonClicked(object sender,
+		                             EventArgs args)
+		{
+			PhotoEditorWindow photoEditor = new PhotoEditorWindow();
+			photoEditor.Show();
+		}
+		
+		private void UsersViewCursorChanged (
+			object sender, EventArgs args)
+		{
+			TreeSelection selection = usersView.Selection;
+			Gtk.TreeIter iter;
+			Gtk.TreeModel model;
+			selection.GetSelected (out model, out iter);
+            
+			if (NothingIsSelected (iter)) {
+				addPhotoButton.Sensitive = false;
+			} else {
+				addPhotoButton.Sensitive = true;
+			}
+			
+		}
+
+
+		private void OnDelete (object sender, DeleteEventArgs args)
+		{
+			Application.Quit ();
+		}
+		
+		#endregion
+		
+		#region Renderer helpers
+		private void RenderUserId (
+            Gtk.TreeViewColumn column,
+            Gtk.CellRenderer cell,
+            Gtk.TreeModel model,
+            Gtk.TreeIter iter)
+		{
+			User user = (User)model.GetValue (iter, 0);
+			(cell as Gtk.CellRendererText).Text = user.Id.ToString ();
+		}
+		
+		private void RenderUserUid (
+            Gtk.TreeViewColumn column,
+            Gtk.CellRenderer cell,
+            Gtk.TreeModel model,
+            Gtk.TreeIter iter)
+		{
+			User user = (User)model.GetValue (iter, 0);
+			(cell as Gtk.CellRendererText).Text = user.Uid.ToString ();
+		}
+		
+		private void RenderUserName (
+            Gtk.TreeViewColumn column,
+            Gtk.CellRenderer cell,
+            Gtk.TreeModel model,
+            Gtk.TreeIter iter)
+		{
+			User user = (User)model.GetValue (iter, 0);
+			(cell as Gtk.CellRendererText).Text = user.Name;
+		}
+		
+		#endregion
+		
+		#region Utils
+		protected bool NothingIsSelected (Gtk.TreeIter iter)
+		{
+			return iter.Stamp == 0;
+		}
+				private void RenderUserList ()
 		{
 			var store = new ListStore (typeof(User));
 			
@@ -91,20 +162,8 @@ namespace FaceCon.FaceManager
 			VBox photosPane = new VBox ();
 			HBox panes = new HBox ();
 			
-			// Users pane
+			#region Users pane
 			usersLabel = new Label ("Users");
-			
-			/*
-			addUserButton = new Button("Add user");
-			editUserButton = new Button("Edit user");
-			deleteUserButton = new Button("Delete user");
-			
-			userManagementButtons = new HButtonBox();
-			userManagementButtons.LayoutStyle = ButtonBoxStyle.Start;
-			userManagementButtons.PackStart(addUserButton);
-			userManagementButtons.PackStart(editUserButton);
-			userManagementButtons.PackStart(deleteUserButton);
-			*/
 			usersView = new TreeView ();
 			usersView.SetSizeRequest (320, 240);
 			
@@ -120,9 +179,9 @@ namespace FaceCon.FaceManager
 			CellRendererText uidRenderer = new CellRendererText ();
 			CellRendererText nameRenderer = new CellRendererText ();
 			
-			userIdColumn.PackStart(idRenderer, true);
-			userUidColumn.PackStart(uidRenderer, true);
-			userNameColumn.PackStart(nameRenderer, true);
+			userIdColumn.PackStart (idRenderer, true);
+			userUidColumn.PackStart (uidRenderer, true);
+			userNameColumn.PackStart (nameRenderer, true);
 			
 			userIdColumn.SetCellDataFunc (idRenderer, new TreeCellDataFunc (RenderUserId));
 			userUidColumn.SetCellDataFunc (uidRenderer, new TreeCellDataFunc (RenderUserUid));
@@ -131,16 +190,18 @@ namespace FaceCon.FaceManager
 			usersView.AppendColumn (userIdColumn);
 			usersView.AppendColumn (userUidColumn);
 			usersView.AppendColumn (userNameColumn);
-
 			
 			usersPane.PackStart (usersLabel, false, false, 8);
 			usersPane.PackStart (usersView);
-			// usersPane.PackStart(userManagementButtons);
+			#endregion
 			
-			// Photos pane
+			#region Photos pane
 			photosLabel = new Label ("Photos");
 			addPhotoButton = new Button ("Add photo");
 			deletePhotoButton = new Button ("Delete photo");
+			
+			addPhotoButton.Sensitive = false;
+			deletePhotoButton.Sensitive = false;
 			
 			photoManagementButtons = new HButtonBox ();
 			photoManagementButtons.LayoutStyle = ButtonBoxStyle.Start;
@@ -161,17 +222,19 @@ namespace FaceCon.FaceManager
 			photosPane.PackStart (photosLabel, false, false, 8);
 			photosPane.PackStart (photosView);
 			photosPane.PackStart (photoManagementButtons);
+			#endregion
 			
 			panes.PackStart (usersPane);
 			panes.PackStart (photosPane);
 			
-			// Control buttons
+			#region Control buttons
 			controlButtons = new HButtonBox ();
 			saveButton = new Button ("Save");
 			cancelButton = new Button ("Cancel");
 			controlButtons.PackStart (saveButton, false, false, 8);
 			controlButtons.PackStart (cancelButton, false, false, 8);
 			controlButtons.LayoutStyle = ButtonBoxStyle.End;
+			#endregion
 			
 			VBox rows = new VBox ();
 			rows.PackStart (panes);
@@ -179,45 +242,14 @@ namespace FaceCon.FaceManager
 			this.Add (rows);
 			this.ShowAll ();
 			
-			// Handlers
+			#region Event Handlers Setup
 			this.DeleteEvent += new DeleteEventHandler (OnDelete);
+			usersView.CursorChanged += new EventHandler (UsersViewCursorChanged);
+			addPhotoButton.Clicked += new EventHandler(AddPhotoButtonClicked);
+			#endregion
 		}
 		
-		private void OnDelete (object sender, DeleteEventArgs args)
-		{
-			Application.Quit ();
-		}
-		
-		private void RenderUserId (
-            Gtk.TreeViewColumn column,
-            Gtk.CellRenderer cell,
-            Gtk.TreeModel model,
-            Gtk.TreeIter iter)
-		{
-			User user = (User)model.GetValue (iter, 0);
-			(cell as Gtk.CellRendererText).Text = user.Id.ToString ();
-		}
-		
-		private void RenderUserUid (
-            Gtk.TreeViewColumn column,
-            Gtk.CellRenderer cell,
-            Gtk.TreeModel model,
-            Gtk.TreeIter iter)
-		{
-			User user = (User)model.GetValue (iter, 0);
-			(cell as Gtk.CellRendererText).Text = user.Uid.ToString ();
-		}
-		
-		
-		private void RenderUserName (
-            Gtk.TreeViewColumn column,
-            Gtk.CellRenderer cell,
-            Gtk.TreeModel model,
-            Gtk.TreeIter iter)
-		{
-			User user = (User)model.GetValue (iter, 0);
-			(cell as Gtk.CellRendererText).Text = user.Name;
-		}
+		#endregion
 		
 	}
 }

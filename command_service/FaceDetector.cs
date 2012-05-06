@@ -6,7 +6,7 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 
 
-namespace FaceCon.FaceCon
+namespace FaceCon.CommandService
 {
 	public delegate void FaceChangedHandler(bool fasePresent);
 	/// <summary>
@@ -29,7 +29,7 @@ namespace FaceCon.FaceCon
 			haarCascade = new HaarCascade(cascadePath);
 		}
 		
-		public bool processImage(ref Image<Gray, byte> drawedFace)
+		public bool processImage(Image<Gray, byte> drawedFace, out Rectangle rect)
 		{
 			var faces =  haarCascade.Detect(image,
 				1.4, 4,
@@ -38,11 +38,16 @@ namespace FaceCon.FaceCon
 			    new Size(image.Width, image.Height)
             );
 
-			foreach (var face in faces) {
-				drawedFace.Draw (face.rect, new Gray(double.MaxValue), 3);
+			if (faces.Length == 1)
+			{
+				rect = faces[0].rect;
+				return true;
+			} else
+			{
+				rect = new Rectangle(0,0,0,0);
+				return false;
 			}
 			
-			return faces.Length > 0;
 		}
 	}
 }

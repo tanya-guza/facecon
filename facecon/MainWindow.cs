@@ -15,6 +15,8 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
+using FaceCon.CommandService;
+
 namespace FaceCon.FaceCon
 {
 /// <summary>
@@ -149,8 +151,7 @@ namespace FaceCon.FaceCon
 		private void OnAuthButtonClick (object o, EventArgs args)
 		{
 			camerabin.Emit ("capture-start", new object[]{});
-			camerabin.Emit ("capture-stop", new object[]{});
-		
+			camerabin.Emit ("capture-stop", new object[]{});	
 		}
 	
 		private void OnImageDone (object o, Gst.GLib.SignalArgs args)
@@ -167,7 +168,8 @@ namespace FaceCon.FaceCon
 		
 			Image<Gray, byte> drawedFace = processor.GrayscaleImage;
 		
-			if (detector.processImage (ref drawedFace)) {
+			System.Drawing.Rectangle rect = new System.Drawing.Rectangle();
+			if (detector.processImage (drawedFace, out rect)) {
 				Title = "Лицо найдено. Данные отправляются на сервер";
 				var binding = new BasicHttpBinding ();
 				var address = new EndpointAddress ("http://" + entryHost.Text + ":" + entryPort.Text);

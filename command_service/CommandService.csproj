@@ -69,11 +69,14 @@
       <HintPath>..\orm\Mono.Data.Sqlite.Orm.dll</HintPath>
     </Reference>
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CommandService.cs" />
     <Compile Include="UserInfo.cs" />
+    <Compile Include="FaceDetector.cs" />
+    <Compile Include="ImageProcessor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

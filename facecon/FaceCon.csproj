@@ -106,8 +106,6 @@
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="TerminalWindow.cs" />
-    <Compile Include="ImageProcessor.cs" />
-    <Compile Include="FaceDetector.cs" />
     <Compile Include="CommandClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

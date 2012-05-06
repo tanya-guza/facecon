@@ -76,6 +76,7 @@
       <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.desktop">

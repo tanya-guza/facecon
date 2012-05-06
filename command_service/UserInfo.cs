@@ -41,6 +41,9 @@ namespace FaceCon.CommandService
 		public string ImageData {get; set;}
 	}
 	
+	/// <summary>
+	/// Class for managing information about users and their photos
+	/// </summary>
 	public class UserInfoManager
 	{
 		#region Private variables

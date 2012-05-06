@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Security;
+using System.Security.Principal;
 using System.Security.Permissions;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
+using System.DirectoryServices;
 
 using Mono.Data.Sqlite;
 using Mono.Data.Sqlite.Orm;
@@ -107,6 +109,13 @@ namespace FaceCon.CommandService
 			{
 				Console.WriteLine("Table 'photos' already exists");
 			}
+			
+			List<User> users = ParseEtcPasswd();
+			foreach(var user in users)
+			{
+				SaveUser(user);
+			}
+			
 		}
 		/// <summary>
 		/// Check if user can write to selected DB location
@@ -131,6 +140,36 @@ namespace FaceCon.CommandService
 			return image;
 		}
 		
+		/// <summary>
+		/// Parses the /etc/passwd.
+		/// </summary>
+		/// <returns>
+		/// The etc password.
+		/// </returns>
+		public static List<User> ParseEtcPasswd()
+		{
+			List<User> users = new List<User>();
+			StreamReader reader = new StreamReader("/etc/passwd");
+			
+			string passwdString = null;
+			while( (passwdString = reader.ReadLine()) != null)
+			{
+				string []substrings = passwdString.Split(':');
+				
+				int uid = Int32.Parse(substrings[2]);
+				
+				// We will look only for user accounts ( UID >= 1000)
+				if (uid >= 1000)
+				{
+					User user = new User();
+					user.Name = substrings[0];
+					user.Uid  = uid;
+					users.Add(user);
+				}
+			}
+			return users;
+		}
+		
 		#endregion
 		
 		#region User methods
@@ -142,7 +181,8 @@ namespace FaceCon.CommandService
 		/// </param>
 		public void SaveUser(User user)
 		{
-			if (user.Id == 0)
+			if (user.Id == 0 && (session.ExecuteScalar<Int32>(
+				"SELECT COUNT(*) FROM User WHERE Uid = ?", user.Uid)) == 0)
 			{
 				session.Insert<User>(user);
 			} else

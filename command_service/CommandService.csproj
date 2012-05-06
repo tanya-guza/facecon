@@ -68,6 +68,7 @@
     <Reference Include="Mono.Data.Sqlite.Orm">
       <HintPath>..\orm\Mono.Data.Sqlite.Orm.dll</HintPath>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />

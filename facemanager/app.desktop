@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Face Manager
+Exec=facemanager
+Terminal=false
+GenericName=Face Manager
+Comment=Tool to manage Face Database
+Categories=Security;Settings;

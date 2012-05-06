@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "facecon", "facecon\facecon.csproj", "{AC2FA342-B64F-4583-A8C7-40B1F3683B08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceCon", "facecon\FaceCon.csproj", "{AC2FA342-B64F-4583-A8C7-40B1F3683B08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "command_service", "command_service\command_service.csproj", "{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandService", "command_service\CommandService.csproj", "{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gui_server", "gui_server\gui_server.csproj", "{D2C68CC3-AE93-407A-ABB4-FF47F3E0394E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiServer", "gui_server\GuiServer.csproj", "{D2C68CC3-AE93-407A-ABB4-FF47F3E0394E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "facemanager", "facemanager\facemanager.csproj", "{328A8AB7-70CF-44A1-B9A4-33C3E58DDF98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceManager", "facemanager\FaceManager.csproj", "{328A8AB7-70CF-44A1-B9A4-33C3E58DDF98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +33,6 @@ Global
 		{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = facecon\facecon.csproj
+		StartupItem = facecon\FaceCon.csproj
 	EndGlobalSection
 EndGlobal

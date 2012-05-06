@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{328A8AB7-70CF-44A1-B9A4-33C3E58DDF98}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>facemanager</RootNamespace>
-    <AssemblyName>facemanager</AssemblyName>
+    <ProjectGuid>{AC2FA342-B64F-4583-A8C7-40B1F3683B08}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>facecon</RootNamespace>
+    <AssemblyName>facecon</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,17 +30,49 @@
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
       <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>glib-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>glade-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="Mono.Posix" />
     <Reference Include="gstreamer-sharp, Version=0.9.2.0, Culture=neutral, PublicKeyToken=4956b48baf980190">
       <Private>False</Private>
       <Package>gstreamer-sharp-0.10</Package>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="Mono.Data.Sqlite" />
+    <Reference Include="vte-sharp, Version=0.16.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+      <Package>vte-sharp-0.16</Package>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <HintPath>..\emgucv\System.ServiceModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel.Routing" />
+    <Reference Include="System.ServiceModel.Discovery" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
     <Reference Include="Emgu.CV">
       <HintPath>..\emgucv\Emgu.CV.dll</HintPath>
     </Reference>
@@ -65,21 +97,29 @@
     <Reference Include="System.Runtime.Serialization">
       <HintPath>..\emgucv\System.Runtime.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="System.ServiceModel">
-      <HintPath>..\emgucv\System.ServiceModel.dll</HintPath>
-    </Reference>
     <Reference Include="ZedGraph">
       <HintPath>..\emgucv\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="TerminalWindow.cs" />
+    <Compile Include="ImageProcessor.cs" />
+    <Compile Include="FaceDetector.cs" />
+    <Compile Include="CommandClient.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Content Include="app.desktop">
       <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="UserInfo.cs" />
+    <ProjectReference Include="..\command_service\CommandService.csproj">
+      <Project>{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}</Project>
+      <Name>CommandService</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

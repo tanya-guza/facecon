@@ -1,5 +1,6 @@
 using System;
 using Gtk;
+using FaceCon.CommandService;
 
 namespace FaceCon.FaceManager
 {

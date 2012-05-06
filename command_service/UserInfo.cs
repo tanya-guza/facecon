@@ -9,7 +9,7 @@ using Mono.Data.Sqlite;
 using Emgu.CV;
 using Emgu.CV.Structure;
 
-namespace FaceCon.FaceManager
+namespace FaceCon.CommandService
 {
 	public struct UserInfo
 	{

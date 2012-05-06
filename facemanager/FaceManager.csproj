@@ -2,15 +2,15 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>command_service</RootNamespace>
-    <AssemblyName>command_service</AssemblyName>
+    <ProjectGuid>{328A8AB7-70CF-44A1-B9A4-33C3E58DDF98}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>facemanager</RootNamespace>
+    <AssemblyName>facemanager</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -18,27 +18,29 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Mono.Posix" />
-    <Reference Include="System.Core">
-      <HintPath>..\emgucv\System.Core.dll</HintPath>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
     </Reference>
-    <Reference Include="System.ServiceModel">
-      <HintPath>..\emgucv\System.ServiceModel.dll</HintPath>
+    <Reference Include="gstreamer-sharp, Version=0.9.2.0, Culture=neutral, PublicKeyToken=4956b48baf980190">
+      <Private>False</Private>
+      <Package>gstreamer-sharp-0.10</Package>
     </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="Mono.Data.Sqlite" />
     <Reference Include="Emgu.CV">
       <HintPath>..\emgucv\Emgu.CV.dll</HintPath>
     </Reference>
@@ -57,16 +59,32 @@
     <Reference Include="Emgu.Util">
       <HintPath>..\emgucv\Emgu.Util.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core">
+      <HintPath>..\emgucv\System.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <HintPath>..\emgucv\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <HintPath>..\emgucv\System.ServiceModel.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph">
       <HintPath>..\emgucv\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="CommandService.cs" />
+    <Content Include="app.desktop">
+      <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
+    </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="MainWindow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\command_service\CommandService.csproj">
+      <Project>{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}</Project>
+      <Name>CommandService</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

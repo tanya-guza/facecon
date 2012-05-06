@@ -73,9 +73,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\command_service\command_service.csproj">
+    <ProjectReference Include="..\command_service\CommandService.csproj">
       <Project>{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}</Project>
-      <Name>command_service</Name>
+      <Name>CommandService</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

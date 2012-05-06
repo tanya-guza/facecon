@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>command_service</RootNamespace>
+    <AssemblyName>command_service</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="System.Core">
+      <HintPath>..\emgucv\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <HintPath>..\emgucv\System.ServiceModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Emgu.CV">
+      <HintPath>..\emgucv\Emgu.CV.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.GPU">
+      <HintPath>..\emgucv\Emgu.CV.GPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.ML">
+      <HintPath>..\emgucv\Emgu.CV.ML.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.Stitching">
+      <HintPath>..\emgucv\Emgu.CV.Stitching.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI">
+      <HintPath>..\emgucv\Emgu.CV.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.Util">
+      <HintPath>..\emgucv\Emgu.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>..\emgucv\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>..\emgucv\ZedGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Data.Sqlite" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CommandService.cs" />
+    <Compile Include="UserInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

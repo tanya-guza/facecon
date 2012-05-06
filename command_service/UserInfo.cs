@@ -4,33 +4,60 @@ using System.Data;
 using System.IO;
 using System.Security;
 using System.Security.Permissions;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Text;
+
 using Mono.Data.Sqlite;
+using Mono.Data.Sqlite.Orm;
+using Mono.Data.Sqlite.Orm.ComponentModel;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
 
 namespace FaceCon.CommandService
 {
-	public struct UserInfo
+	/// <summary>
+	/// Class for mapping information about user in database
+	/// </summary>
+	public class User
 	{
-		public string Name;
-		public long uid;
-		public List<Image<Gray, byte>> photos; 
+		
+		[PrimaryKey, AutoIncrement]
+		public int Id { get; set; }
+		public string Name {get; set;}
+		public long Uid {get; set;}
+	}
+	
+	/// <summary>
+	/// Class for mapping information about user photos in database
+	/// </summary>
+	public class Photo
+	{
+		[PrimaryKey, AutoIncrement]
+		public int Id {get; set; }
+		[Indexed("IX_UserId")]
+		public int UserId {get; set; }
+		public string ImageData {get; set;}
 	}
 	
 	public class UserInfoManager
 	{
-		private const string CONNECTION_STRING = "URI=file:/etc/FaceManager.db,version=3";
+		#region Private variables
+		private const string CONNECTION_STRING = "URI=file:FaceManager.db,version=3";
 		private const string DATABASE_LOCATION = "/etc/";
+		private SqliteSession session;
+		#endregion
 		
-		private IDbConnection connection;
+		#region Utility methods
+		/// <summary>
+		/// Connect to database
+		/// </summary>
 		public bool connect()
-		{
-			connection = (IDbConnection) new SqliteConnection(CONNECTION_STRING);
-			
+		{	
 			try
 			{
-				connection.Open();
+				session = new SqliteSession(CONNECTION_STRING);
 				setup();
 				return true;
 			}
@@ -40,24 +67,14 @@ namespace FaceCon.CommandService
 				return false;
 			}
 		}
-		
-		public List<UserInfo> load()
-		{
-			return null;
-		}
-		
-		public void save(List<UserInfo> users)
-		{
-		}
-		
+		/// <summary>
+		/// Setup database tables if they don't exist
+		/// </summary>
 		private void setup()
 		{
 			try
 			{
-				IDbCommand setupCommand = connection.CreateCommand();
-				setupCommand.CommandText = "CREATE TABLE users(id INTEGER " +
-					"PRIMARY KEY, login VARCHAR(32), uid INTEGER);";
-				setupCommand.ExecuteNonQuery();	
+				session.CreateTable<User>();
 			}
 			catch (Exception)
 			{
@@ -66,17 +83,16 @@ namespace FaceCon.CommandService
 			
 			try
 			{
-				IDbCommand setupCommand = connection.CreateCommand();
-				setupCommand.CommandText = "CREATE TABLE photos(id INTEGER " +
-					"PRIMARY KEY, user_id INTEGER, photo BLOB);";
-				setupCommand.ExecuteNonQuery();	
+				session.CreateTable<Photo>();
 			}
 			catch (Exception)
 			{
 				Console.WriteLine("Table 'photos' already exists");
 			}
 		}
-		
+		/// <summary>
+		/// Check if user can write to selected DB location
+		/// </summary>
 		public bool havePermissions()
 		{
 			var permission = new FileIOPermission(FileIOPermissionAccess.Write,
@@ -86,6 +102,88 @@ namespace FaceCon.CommandService
 			
 			return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
 		}
+		
+		public static Image<Gray, byte> DeserializeImage(string data)
+		{
+			XmlDocument xDoc = new XmlDocument();
+			xDoc.LoadXml(data);
+			Image<Gray, Byte> image = (Image<Gray, Byte>)
+			(new XmlSerializer(typeof(Image<Gray, Byte>))).Deserialize(new XmlNodeReader(xDoc));
+	
+			return image;
+		}
+		
+		#endregion
+		
+		#region User methods
+		/// <summary>
+		/// Creates new record in users table or updates existing one
+		/// </summary>
+		/// <param name='user'>
+		/// User data
+		/// </param>
+		void SaveUser(User user)
+		{
+			if (user.Id == 0)
+			{
+				session.Insert<User>(user);
+			} else
+			{
+				session.Update<User>(user);
+			}
+		}
+		
+		/// <summary>
+		/// Finds the user by name
+		/// </summary>
+		/// <param name='Name'>
+		/// Name
+		/// </param>
+		User FindUser(string Name)
+		{
+			return session.ExecuteScalar<User>(
+				"SELECT FROM User WHERE Name == ?", Name);
+		}
+		
+		/// <summary>
+		/// Deletes the user
+		/// </summary>
+		/// <param name='user'>
+		/// User
+		/// </param>
+		void DeleteUser(User user)
+		{
+			session.Delete<User>(user);
+		}
+		
+		/// <summary>
+		/// Lists the user photos.
+		/// </summary>
+		/// <returns>
+		/// The user photos.
+		/// </returns>
+		/// <param name='user'>
+		/// User.
+		/// </param>
+		List<Image<Gray, byte>> ListUserPhotos(User user)
+		{
+			List<Image<Gray, byte>> photos = new List<Image<Gray, byte>>();
+			IEnumerable<Photo> photoData = session.Query<Photo>(
+				"SELECT * FROM Photo WHERE UserId = ?", user.Id);
+			
+			foreach(var photo in photoData)
+			{
+				photos.Add(DeserializeImage(photo.ImageData));
+			}
+			
+			return photos;
+		}
+		#endregion
+		
+		#region Photo methods
+		#endregion
+		
+		
 	}
 }
 

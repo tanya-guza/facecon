@@ -65,6 +65,9 @@
     </Reference>
     <Reference Include="Mono.Data.Sqlite" />
     <Reference Include="System.Data" />
+    <Reference Include="Mono.Data.Sqlite.Orm">
+      <HintPath>..\orm\Mono.Data.Sqlite.Orm.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />

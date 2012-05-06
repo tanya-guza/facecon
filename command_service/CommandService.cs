@@ -9,8 +9,6 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
-using System.Xml;
-
 namespace FaceCon.CommandService
 {
 	public delegate void AuthenticationHandler(string imageData);
@@ -61,15 +59,6 @@ namespace FaceCon.CommandService
 			return proc.StandardOutput.ReadToEnd();
 		}
 		
-		private Image<Gray, byte> deserializeImage(string data)
-		{
-			XmlDocument xDoc = new XmlDocument();
-			xDoc.LoadXml(data);
-			Image<Gray, Byte> image = (Image<Gray, Byte>)
-			(new XmlSerializer(typeof(Image<Gray, Byte>))).Deserialize(new XmlNodeReader(xDoc));
-	
-			return image;
-		}
 	}
 	
 }

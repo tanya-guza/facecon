@@ -4,7 +4,7 @@
     <Files>
       <File FileName="facecon/TerminalWindow.cs" Line="9" Column="60" />
       <File FileName="facecon/Main.cs" Line="1" Column="1" />
-      <File FileName="facecon/MainWindow.cs" Line="156" Column="9" />
+      <File FileName="facecon/MainWindow.cs" Line="200" Column="39" />
       <File FileName="facecon/ImageProcessor.cs" Line="88" Column="5" />
       <File FileName="facecon/FaceDetector.cs" Line="32" Column="10" />
     </Files>

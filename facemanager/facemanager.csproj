@@ -35,30 +35,42 @@
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
     </Reference>
-    <Reference Include="Emgu.Util">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.Util.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.UI">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.Stitching">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.Stitching.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.ML">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.ML.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.GPU">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.GPU.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.dll</HintPath>
-    </Reference>
     <Reference Include="gstreamer-sharp, Version=0.9.2.0, Culture=neutral, PublicKeyToken=4956b48baf980190">
       <Private>False</Private>
       <Package>gstreamer-sharp-0.10</Package>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="Mono.Data.Sqlite" />
+    <Reference Include="Emgu.CV">
+      <HintPath>..\emgucv\Emgu.CV.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.GPU">
+      <HintPath>..\emgucv\Emgu.CV.GPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.ML">
+      <HintPath>..\emgucv\Emgu.CV.ML.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.Stitching">
+      <HintPath>..\emgucv\Emgu.CV.Stitching.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI">
+      <HintPath>..\emgucv\Emgu.CV.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.Util">
+      <HintPath>..\emgucv\Emgu.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>..\emgucv\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>..\emgucv\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <HintPath>..\emgucv\System.ServiceModel.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>..\emgucv\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.desktop">

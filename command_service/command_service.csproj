@@ -33,24 +33,6 @@
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="Emgu.Util">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.Util.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.UI">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.Stitching">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.Stitching.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.ML">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.ML.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.GPU">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.GPU.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

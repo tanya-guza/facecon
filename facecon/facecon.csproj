@@ -65,39 +65,41 @@
       <Private>False</Private>
       <Package>vte-sharp-0.16</Package>
     </Reference>
-    <Reference Include="Emgu.CV">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.GPU">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.GPU.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.ML">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.ML.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.Stitching">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.Stitching.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.CV.UI">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.CV.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Emgu.Util">
-      <HintPath>..\..\..\..\emgucv\bin\Emgu.Util.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core">
-      <HintPath>..\..\..\..\emgucv\bin\System.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <HintPath>..\..\..\..\emgucv\bin\System.Runtime.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="ZedGraph">
-      <HintPath>..\..\..\..\emgucv\bin\ZedGraph.dll</HintPath>
+    <Reference Include="System.ServiceModel">
+      <HintPath>..\emgucv\System.ServiceModel.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel.Routing" />
     <Reference Include="System.ServiceModel.Discovery" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Emgu.CV">
+      <HintPath>..\emgucv\Emgu.CV.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.GPU">
+      <HintPath>..\emgucv\Emgu.CV.GPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.ML">
+      <HintPath>..\emgucv\Emgu.CV.ML.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.Stitching">
+      <HintPath>..\emgucv\Emgu.CV.Stitching.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI">
+      <HintPath>..\emgucv\Emgu.CV.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.Util">
+      <HintPath>..\emgucv\Emgu.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>..\emgucv\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>..\emgucv\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>..\emgucv\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.cs" />

@@ -33,7 +33,7 @@ namespace FaceCon.CommandService
 		{
 			var faces =  haarCascade.Detect(image,
 				1.4, 4,
-                HAAR_DETECTION_TYPE.DO_CANNY_PRUNING,
+                HAAR_DETECTION_TYPE.DO_ROUGH_SEARCH,
                 new Size(image.Width / 8, image.Height / 8),
 			    new Size(image.Width, image.Height)
             );

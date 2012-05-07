@@ -150,6 +150,7 @@ namespace FaceCon.FaceCon
 		/// </summary>
 		private void OnAuthButtonClick (object o, EventArgs args)
 		{
+			authButton.Sensitive = false;
 			camerabin.Emit ("capture-start", new object[]{});
 			camerabin.Emit ("capture-stop", new object[]{});	
 		}
@@ -163,7 +164,7 @@ namespace FaceCon.FaceCon
 			ImageProcessor processor = new ImageProcessor (sourceImage);
 		
 			// Face detection
-			var detector = new FaceDetector ("haarcascade_frontalface_alt2.xml",
+			var detector = new FaceDetector ("/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt2.xml",
 		    processor.NormalizedImage);
 		
 			Image<Gray, byte> drawedFace = processor.GrayscaleImage;
@@ -174,11 +175,13 @@ namespace FaceCon.FaceCon
 				var binding = new BasicHttpBinding ();
 				var address = new EndpointAddress ("http://" + entryHost.Text + ":" + entryPort.Text);
 				client = new CommandClient (binding, address);
-				Console.WriteLine (client.authenticate (serializeImage (processor.NormalizedImage)));
-				Console.WriteLine (client.executeCommand ("dmesg", ""));
+				Console.WriteLine (client.authenticate (UserInfoManager.SerializeImage (processor.NormalizedImage.GetSubRect(rect).Clone())));
+			//	Console.WriteLine (client.executeCommand ("dmesg", ""));
+				
 			
 			} else {
 				Title = "В видоискателе нет лица";
+				authButton.Sensitive = true;
 			}
 			/*	
 		using (Image<Bgr, byte> img = new Image<Bgr, byte>(400, 200, new Bgr(255, 0, 0))) {
@@ -191,13 +194,7 @@ namespace FaceCon.FaceCon
 		} */
 		}
 
-		private string serializeImage (Image<Gray, byte> image)
-		{
-			var sb = new System.Text.StringBuilder ();
-			(new XmlSerializer (typeof(Image<Gray, Byte>))).Serialize (new StringWriter (sb), image);
-		
-			return sb.ToString ();
-		}
+
 
 		[DllImport ("libgdk-x11-2.0.so.0") ]
 		static extern uint gdk_x11_drawable_get_xid (IntPtr handle);

@@ -33,6 +33,6 @@ Global
 		{DFF64BE3-9096-4A2B-A394-26E5BC1B3944}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = facemanager\FaceManager.csproj
+		StartupItem = facecon\FaceCon.csproj
 	EndGlobalSection
 EndGlobal

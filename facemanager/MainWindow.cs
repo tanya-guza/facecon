@@ -1,8 +1,10 @@
 using System;
 using Gtk;
 using Gdk;
+using System.Drawing;
+using System.Drawing.Imaging;
 using FaceCon.CommandService;
-
+using System.Runtime.Serialization;
 namespace FaceCon.FaceManager
 {
 	public class MainWindow : Gtk.Window
@@ -71,11 +73,22 @@ namespace FaceCon.FaceManager
 		
 		
 		#region Event Handlers
-		private void AddPhotoButtonClicked(object sender,
+		private void AddPhotoButtonClicked (object sender,
 		                             EventArgs args)
 		{
-			PhotoEditorWindow photoEditor = new PhotoEditorWindow();
-			photoEditor.Show();
+			PhotoEditorWindow photoEditor = new PhotoEditorWindow (this);
+			photoEditor.Run ();
+			
+			if (photoEditor.Photo != null) {
+				Console.WriteLine ("Decided to save!");
+				Photo photo = new Photo();
+				photo.UserId = GetSelectedUser().Id;
+				photo.ImageData = UserInfoManager.SerializeImage(photoEditor.Photo.Clone());
+				
+				userInfoManager.SavePhoto(photo);
+			} else {
+				Console.WriteLine ("Cancel!");
+			}
 		}
 		
 		private void UsersViewCursorChanged (
@@ -89,11 +102,12 @@ namespace FaceCon.FaceManager
 			if (NothingIsSelected (iter)) {
 				addPhotoButton.Sensitive = false;
 			} else {
+				RenderPhotoList(GetSelectedUser());
 				addPhotoButton.Sensitive = true;
+				
 			}
 			
 		}
-
 
 		private void OnDelete (object sender, DeleteEventArgs args)
 		{
@@ -133,14 +147,58 @@ namespace FaceCon.FaceManager
 			(cell as Gtk.CellRendererText).Text = user.Name;
 		}
 		
+		private void RenderPhotoId (
+            Gtk.TreeViewColumn column,
+            Gtk.CellRenderer cell,
+            Gtk.TreeModel model,
+            Gtk.TreeIter iter)
+		{
+			Photo photo = (Photo)model.GetValue (iter, 0);
+			(cell as Gtk.CellRendererText).Text = photo.Id.ToString();
+		}
+		
+		private void RenderPhotoImage (
+            Gtk.TreeViewColumn column,
+            Gtk.CellRenderer cell,
+            Gtk.TreeModel model,
+            Gtk.TreeIter iter)
+		{
+			System.IO.MemoryStream stream = new System.IO.MemoryStream();
+			
+			Photo photo = (Photo)model.GetValue (iter, 0);
+		
+			photo.Image.Save("hello.png");
+		
+			Console.WriteLine(stream.Capacity);
+			Gdk.Pixbuf p = new Gdk.Pixbuf("hello.png");
+			
+			(cell as Gtk.CellRendererPixbuf).Pixbuf = p;
+		}
+		
+		
 		#endregion
 		
 		#region Utils
+		protected User GetSelectedUser()
+		{
+			TreeSelection selection = usersView.Selection;
+			Gtk.TreeIter iter;
+			Gtk.TreeModel model;
+			selection.GetSelected (out model, out iter);
+            
+			if (NothingIsSelected (iter)) {
+				return null;
+			} else {
+				return (User)model.GetValue (iter, 0);        
+			}
+		}
+		
 		protected bool NothingIsSelected (Gtk.TreeIter iter)
 		{
 			return iter.Stamp == 0;
 		}
-				private void RenderUserList ()
+
+		private void RenderUserList ()
 		{
 			var store = new ListStore (typeof(User));
 			
@@ -154,6 +212,13 @@ namespace FaceCon.FaceManager
 		
 		private void RenderPhotoList (User user)
 		{
+			var store = new ListStore (typeof(Photo));
+			
+			foreach (var photo in (userInfoManager.ListUserPhotoData(user))) {
+				store.AppendValues (photo);
+			}
+			
+			photosView.Model = store;
 		}
 		
 		private void BuildInterface ()
@@ -211,12 +276,23 @@ namespace FaceCon.FaceManager
 			photosView = new TreeView ();
 			photosView.SetSizeRequest (320, 240);
 			TreeViewColumn photoIdColumn = new TreeViewColumn ();
-			TreeViewColumn photoImageColumn = 
-				new TreeViewColumn ("Image", new CellRendererPixbuf (), 0);
 			photoIdColumn.Title = "ID";
+			TreeViewColumn photoImageColumn = new TreeViewColumn();
+			photoImageColumn.Title = "Image";
+			
+			CellRendererText photoIdRenderer = new CellRendererText();
+			CellRendererPixbuf imageRenderer = new CellRendererPixbuf();
+			
+			photoIdColumn.PackStart(photoIdRenderer, true);
+			photoImageColumn.PackStart(imageRenderer, true);
+			
+			photoIdColumn.SetCellDataFunc(photoIdRenderer, new TreeCellDataFunc(RenderPhotoId));
+			photoImageColumn.SetCellDataFunc(imageRenderer, new TreeCellDataFunc(RenderPhotoImage));
+			
 			photosView.AppendColumn (photoIdColumn);
 			photosView.AppendColumn (photoImageColumn);
-			ListStore photosStore = new ListStore (typeof(int), typeof(Pixbuf));
+			
+			ListStore photosStore = new ListStore (typeof(Photo));
 			photosView.Model = photosStore;
 			
 			photosPane.PackStart (photosLabel, false, false, 8);
@@ -245,7 +321,7 @@ namespace FaceCon.FaceManager
 			#region Event Handlers Setup
 			this.DeleteEvent += new DeleteEventHandler (OnDelete);
 			usersView.CursorChanged += new EventHandler (UsersViewCursorChanged);
-			addPhotoButton.Clicked += new EventHandler(AddPhotoButtonClicked);
+			addPhotoButton.Clicked += new EventHandler (AddPhotoButtonClicked);
 			#endregion
 		}
 		

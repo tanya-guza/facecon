@@ -16,7 +16,7 @@ using FaceCon.CommandService;
 
 namespace FaceCon.FaceManager
 {
-	public class PhotoEditorWindow : Gtk.Window
+	public class PhotoEditorWindow : Gtk.Dialog
 	{
 		public Image<Gray, byte> Photo { get; set; }
 		#region UI controls
@@ -48,7 +48,8 @@ namespace FaceCon.FaceManager
 		
 		private bool needReInit;
 		
-		public PhotoEditorWindow () : base (Gtk.WindowType.Toplevel)
+		public PhotoEditorWindow (Gtk.Window Parent) : base("Photo Editor", Parent,
+		                                                    DialogFlags.Modal)
 		{
 			BuildInterface ();
 			ReInitPipeline ();
@@ -86,7 +87,7 @@ namespace FaceCon.FaceManager
 		
 		private void BuildInterface ()
 		{
-			VBox vbox = new VBox ();
+			VBox vbox = this.Child as VBox;
 			HButtonBox buttonBox = new HButtonBox ();
 			
 			drawingArea = new DrawingArea ();
@@ -106,7 +107,6 @@ namespace FaceCon.FaceManager
 			
 			vbox.PackStart (drawingArea);
 			vbox.PackStart (buttonBox, false, true, 8);
-			this.Add (vbox);
 				
 			this.ShowAll ();
 			
@@ -175,7 +175,7 @@ namespace FaceCon.FaceManager
 			if (detector.processImage (grayFace, out rect)) {
 				Title = "Face found";
 				Photo = grayFace.GetSubRect(rect);
-				PreviewResult();
+				//PreviewResult();
 			} else {
 				Title = "Face not found";
 			}
@@ -191,9 +191,10 @@ namespace FaceCon.FaceManager
 			if (Photo != null)
 			{
 				Emgu.CV.CvInvoke.cvNamedWindow ("Face Preview");
-				CvInvoke.cvShowImage ("Face Preview", Photo);
+				CvInvoke.cvShowImage ("Face Preview", Photo.Clone());
 				CvInvoke.cvWaitKey (0);
 				//Destory the window
+				Console.WriteLine("Here");
 				CvInvoke.cvDestroyWindow ("Face Preview");	
 			}
 		}

@@ -51,6 +51,7 @@ namespace FaceCon.CommandService
 				if (image == null)
 				{
 					image = UserInfoManager.DeserializeImage(ImageData);
+
 				}
 				
 				return image;
@@ -64,7 +65,7 @@ namespace FaceCon.CommandService
 	public class UserInfoManager
 	{
 		#region Private variables
-		private const string CONNECTION_STRING = "URI=file:FaceManager.db,version=3";
+		private const string CONNECTION_STRING = "URI=file:/etc/FaceManager.db,version=3";
 		private const string DATABASE_LOCATION = "/etc/";
 		private SqliteSession session;
 		#endregion
@@ -128,6 +129,14 @@ namespace FaceCon.CommandService
 			permissionSet.AddPermission(permission);
 			
 			return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
+		}
+		
+		public static string SerializeImage (Image<Gray, byte> image)
+		{
+			var sb = new System.Text.StringBuilder ();
+			(new XmlSerializer (typeof(Image<Gray, Byte>))).Serialize (new StringWriter (sb), image);
+		
+			return sb.ToString ();
 		}
 		
 		public static Image<Gray, byte> DeserializeImage(string data)
